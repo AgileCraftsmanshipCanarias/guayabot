@@ -12,5 +12,5 @@ bot.on("message", (ctx) => ctx.reply("Hi there!"));
 
 bot.on("message:new_chat_members", async (ctx) => {
   const name = ctx.message.new_chat_members[0].first_name;
-  await ctx.reply(`¡Bienvenido/a, ${name}! 🎉 ¡Aquí tenemos mojo, gofio y buenos memes!`);
+  await ctx.reply(`¡Bienvenido/a, ${name}! 🎉 ¡Aquí tenemos mojo, gofio y buenos memes!!`);
 });
