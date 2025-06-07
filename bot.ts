@@ -10,7 +10,11 @@ export const bot = new Bot(token);
 
 const AGILE_CANARIAS_CHAT_ID = -1002483762435;
 
-bot.on("message", (ctx) => ctx.reply("Hi there!"));
+bot.on("message", (ctx) => {
+    console.log("simple message", JSON.stringify(ctx.message, null, 2));
+    console.log("simple message", JSON.stringify(ctx.chat, null, 2));
+  return ctx.reply("Hi there!");
+});
 
 bot.on("message:new_chat_members", async (ctx) => {
   const name = ctx.message.new_chat_members[0].first_name;
