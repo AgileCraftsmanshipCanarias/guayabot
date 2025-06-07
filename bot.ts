@@ -24,11 +24,25 @@ Este espacio es para hablar de Agilidad y Software, ni más ni menos. Las discus
 📣 Participación consciente
 Comparte lo que sepas, lo que hayas vivido y hasta lo que no funcionó. Eso sí: no spam, NSFW, ni cosas ilegales. Esto es una comunidad, no un mercadillo.`;
 
+bot.command("start", async (ctx) => {
+  if (ctx.chat.type === "private") {
+    if (ctx.match === "rules") {
+      return ctx.reply(rules);
+    }
+
+    await ctx.reply(
+      "¡Hola! Soy el bot de Agile Canarias. Puedes usar el comando /rules para ver las normas del grupo."
+    );
+  }
+});
+
 bot.command("rules", async (ctx) => {
   if (ctx.chat.type === "private") {
     await ctx.reply(rules);
   } else {
-    await ctx.reply("¡Ey! Las normas te las cuento en privado, no por aquí 📩 👉 https://t.me/AgileGuayotaBot?start=rules");
+    await ctx.reply(
+      "¡Ey! Las normas te las cuento en privado, no por aquí 📩 👉 https://t.me/AgileGuayotaBot"
+    );
   }
 });
 
