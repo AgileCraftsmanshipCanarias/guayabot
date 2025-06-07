@@ -11,19 +11,12 @@ export const bot = new Bot(token);
 const AGILE_CANARIAS_CHAT_ID = -1002483762435;
 
 bot.on("message", (ctx) => {
-    console.log("simple message", JSON.stringify(ctx.message, null, 2));
-    console.log("simple message", JSON.stringify(ctx.chat, null, 2));
-  return ctx.reply("Hi there!");
-});
+  const { new_chat_members } = ctx.message;
 
-bot.on("message:new_chat_members", async (ctx) => {
-  const name = ctx.message.new_chat_members[0].first_name;
-
-  console.log("New chat members", ctx.chat.id);
-  console.log("New chat members", ctx.message.new_chat_members);
-  if (ctx.chat.id === AGILE_CANARIAS_CHAT_ID) {
+  if (ctx.chat.id === AGILE_CANARIAS_CHAT_ID && new_chat_members) {
+    const name = new_chat_members[0].first_name;
     const welcomeMessage = getWelcomeMessage(name);
-    await ctx.reply(welcomeMessage);
+    return ctx.reply(welcomeMessage);
   }
 });
 
