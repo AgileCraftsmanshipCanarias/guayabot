@@ -11,6 +11,13 @@ export const bot = new Bot(token);
 const AGILE_CANARIAS_CHAT_ID = -1002483762435;
 
 bot.command("normas", (ctx) => {
+  const id = ctx?.from?.id
+
+  if (id) {
+    ctx.api.sendMessage(id, "typing");
+  }
+
+
   return ctx.reply(`Gracias por tomarte la molestia de leerlas. Aquí tienes un resumen:
 
 🌱 Respeto
@@ -30,13 +37,29 @@ bot.on("message", (ctx) => {
   const { new_chat_members } = ctx.message;
 
   if (ctx.chat.id === AGILE_CANARIAS_CHAT_ID && new_chat_members) {
-    const name = new_chat_members[0].first_name;
+  const firstMember = new_chat_members[0];
+    const name = firstMember.first_name;
     const welcomeMessage = getWelcomeMessage(name);
-    return ctx.reply(welcomeMessage);
+    return ctx.reply(welcomeMessage, {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: "📜 Ver normas",
+              callback_data: `send_rules_to_${firstMember.id}`,
+            },
+          ],
+        ],
+      }
+    });
   }
 });
 
-function getWelcomeMessage(name: string) {
-  return `¡Muy buenas, ${name}! 🌞 Te damos la bienvenida con cariño isleño al grupo de Agile Canarias en Telegram. Aquí puedes ver las normas del grupo: /normas`;
-}
+bot.on("callback_query:data", async (ctx) => {
+  console.log("Unknown button event with payload", ctx.callbackQuery.data);
+  await ctx.answerCallbackQuery();
+});
 
+function getWelcomeMessage(name: string) {
+  return `¡Muy buenas, ${name}! 🌞 Te damos la bienvenida con cariño isleño al grupo de Agile Canarias en Telegram. Aquí puedes ver las normas del grupo:`;
+}
