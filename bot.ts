@@ -1,4 +1,4 @@
-import { Bot } from "https://deno.land/x/grammy@v1.36.3/mod.ts";
+import { Bot, InlineKeyboard } from "https://deno.land/x/grammy@v1.36.3/mod.ts";
 
 const token = Deno.env.get("TELEGRAM_TOKEN");
 
@@ -10,15 +10,25 @@ export const bot = new Bot(token);
 
 const AGILE_CANARIAS_CHAT_ID = -1002483762435;
 
-bot.command("normas", (ctx) => {
-  const id = ctx?.from?.id
+const inlineKeyboard = new InlineKeyboard().text("📜 Ver normas", "send_rules");
 
-  if (id) {
-    ctx.api.sendMessage(id, "typing");
+bot.on("message", (ctx) => {
+  const { new_chat_members } = ctx.message;
+
+  if (ctx.chat.id === AGILE_CANARIAS_CHAT_ID && new_chat_members) {
+    const firstMember = new_chat_members[0];
+    const name = firstMember.first_name;
+    const welcomeMessage = getWelcomeMessage(name);
+    return ctx.reply(welcomeMessage, { reply_markup: inlineKeyboard });
   }
+});
 
+bot.callbackQuery("send_rules", async (ctx) => {
+  const userId = ctx.callbackQuery.from.id;
 
-  return ctx.reply(`Gracias por tomarte la molestia de leerlas. Aquí tienes un resumen:
+  await ctx.api.sendMessage(
+    userId,
+    `Gracias por tomarte la molestia de leerlas. Aquí tienes un resumen:
 
 🌱 Respeto
 Habla claro, con cariño y sin mala intención. Si hay desacuerdo, que sea para construir, no para destruir. Escucha con empatía, y espera lo mismo de quienes te rodean.
@@ -30,33 +40,9 @@ Aquí venimos a aprender, no a presumir. Si tienes dudas, suéltalas sin miedo. 
 Este espacio es para hablar de Agilidad y Software, ni más ni menos. Las discusiones políticas, filosóficas o sobre el clima en Marte se quedan en la puerta.
 
 📣 Participación consciente
-Comparte lo que sepas, lo que hayas vivido y hasta lo que no funcionó. Eso sí: no spam, NSFW, ni cosas ilegales. Esto es una comunidad, no un mercadillo.`);
-});
+Comparte lo que sepas, lo que hayas vivido y hasta lo que no funcionó. Eso sí: no spam, NSFW, ni cosas ilegales. Esto es una comunidad, no un mercadillo.`
+  );
 
-bot.on("message", (ctx) => {
-  const { new_chat_members } = ctx.message;
-
-  if (ctx.chat.id === AGILE_CANARIAS_CHAT_ID && new_chat_members) {
-  const firstMember = new_chat_members[0];
-    const name = firstMember.first_name;
-    const welcomeMessage = getWelcomeMessage(name);
-    return ctx.reply(welcomeMessage, {
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: "📜 Ver normas",
-              callback_data: `send_rules_to_${firstMember.id}`,
-            },
-          ],
-        ],
-      }
-    });
-  }
-});
-
-bot.on("callback_query:data", async (ctx) => {
-  console.log("Unknown button event with payload", ctx.callbackQuery.data);
   await ctx.answerCallbackQuery();
 });
 
