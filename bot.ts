@@ -13,8 +13,11 @@ const AGILE_CANARIAS_CHAT_ID = -1002483762435;
 bot.on("message", (ctx) => ctx.reply("Hi there!"));
 
 bot.on("message:new_chat_members", async (ctx) => {
+  const name = ctx.message.new_chat_members[0].first_name;
+
+  console.log("New chat members", ctx.chat.id);
+  console.log("New chat members", ctx.message.new_chat_members);
   if (ctx.chat.id === AGILE_CANARIAS_CHAT_ID) {
-    const name = ctx.message.new_chat_members[0].first_name;
     const welcomeMessage = getWelcomeMessage(name);
     await ctx.reply(welcomeMessage);
   }
