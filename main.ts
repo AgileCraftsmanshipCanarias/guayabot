@@ -1,21 +1,19 @@
 import { webhookCallback } from "https://deno.land/x/grammy@v1.36.3/mod.ts";
-// You might modify this to the correct way to import your `Bot` object.
 import { bot } from "./bot.ts";
 
 const handleUpdate = webhookCallback(bot, "std/http");
 
+const secret = Deno.env.get("WEBHOOK_SECRET");
+
+if (!secret) {
+  throw new Error("WEBHOOK_SECRET is required");
+}
+
 Deno.serve(async (req) => {
   console.log("Received request");
   console.log(req);
-  if (req.method === "POST") {
-    const url = new URL(req.url);
-    if (url.pathname.slice(1) === bot.token) {
-      try {
-        return await handleUpdate(req);
-      } catch (err) {
-        console.error(err);
-      }
-    }
+  if (req.method === "POST" && req.url.includes(secret)) {
+      return await handleUpdate(req);
   }
-  return new Response();
+  return new Response("No hay gofio pa ti", { status: 401 });
 });
