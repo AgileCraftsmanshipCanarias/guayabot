@@ -52,7 +52,7 @@ export type SessionReceivedPayload = {
   createdAt: string;
   data: {
     responseId: string;
-    submissionId: "LZWWg0l";
+    submissionId: string;
     respondentId: string;
     formId: string;
     formName: string;
