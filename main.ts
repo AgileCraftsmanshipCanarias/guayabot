@@ -1,5 +1,5 @@
 import { webhookCallback } from "https://deno.land/x/grammy@v1.36.3/mod.ts";
-import { bot } from "./bot.ts";
+import { bot, onSessionReceived } from "./bot.ts";
 
 const handleUpdate = webhookCallback(bot, "std/http");
 
@@ -21,7 +21,8 @@ Deno.serve(async (req) => {
   if (req.method === "POST") {
     if (req.url.includes("tally") && req.url.includes(tallySecret)) {
       const body = await req.json();
-      console.log("Tally body", body);
+      
+      await onSessionReceived(body);
 
       return new Response(undefined, { status: 204 });
     }

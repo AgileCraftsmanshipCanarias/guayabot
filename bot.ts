@@ -77,8 +77,8 @@ function getWelcomeMessage(name: string) {
   return `¡Muy buenas, ${name}! 🌞 Te damos la bienvenida con cariño isleño al grupo de Agile Canarias en Telegram. Aquí puedes ver las normas del grupo:`;
 }
 
-export function onSessionReceived(sessionReceived: SessionReceivedPayload) {
+export async function onSessionReceived(sessionReceived: SessionReceivedPayload) {
   const summary = summarySession(sessionReceived);
 
-  bot.api.sendMessage(AGILE_CANARIAS_ORGANIZATION_CHAT_ID, summary, { parse_mode: "Markdown" });
+  await bot.api.sendMessage(AGILE_CANARIAS_ORGANIZATION_CHAT_ID, summary, { parse_mode: "Markdown" });
 }
