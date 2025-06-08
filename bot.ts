@@ -35,6 +35,13 @@ Este espacio es para hablar de Agilidad y Software, ni más ni menos. Las discus
 📣 Participación consciente
 Comparte lo que sepas, lo que hayas vivido y hasta lo que no funcionó. Eso sí: no spam, NSFW, ni cosas ilegales. Esto es una comunidad, no un mercadillo.`;
 
+const help = `Puedes usar los siguientes comandos:
+- /rules: Muestra las normas del grupo
+- /suggestion [tu sugerencia]: Envía una sugerencia al grupo
+- /session: Propón una sesión para el grupo
+- /help: Muestra esta ayuda`;
+
+
 bot.command("start", async (ctx) => {
   if (ctx.chat.type !== "private") {
     return;
@@ -50,6 +57,10 @@ bot.command("start", async (ctx) => {
     );
   }
 
+  if (ctx.match === "help") {
+    return ctx.reply(help);
+  }
+
   await ctx.reply(
     "¡Hola! Soy el bot de Agile Canarias. Puedes usar el comando /rules para ver las normas del grupo."
   );
@@ -58,7 +69,7 @@ bot.command("start", async (ctx) => {
 bot.command("suggestion", async (ctx) => {
   if (ctx.chat.type !== "private") {
     await ctx.reply(
-      "Por favor, envíame tu sugerencia en privado 👉 https://t.me/AgileGuayotaBot?start=suggestion"
+      "¡Ey! Mejor, envíame tu sugerencia en privado 👂🏽 👉 https://t.me/AgileGuayotaBot?start=suggestion"
     );
     return;
   }
@@ -84,11 +95,25 @@ bot.command("suggestion", async (ctx) => {
 bot.command("rules", async (ctx) => {
   if (ctx.chat.type !== "private") {
     return ctx.reply(
-      "¡Ey! Las normas te las cuento en privado, no por aquí 📩 👉 https://t.me/AgileGuayotaBot?start=rules"
+      "¡Ey! Las normas te las cuento en privado, no por aquí 📜 👉 https://t.me/AgileGuayotaBot?start=rules"
     );
   }
 
   await ctx.reply(rules);
+});
+
+bot.command("session", async (ctx) => {
+  await ctx.reply("Que bueno una propuesta de sesión! 🎉. Sube tu propuesta aquí 👉🏽 https://tally.so/r/mDEVlZ");
+});
+
+bot.command("help", async (ctx) => {
+  if (ctx.chat.type !== "private") {
+    return ctx.reply(
+      "¡Ey! La ayuda te la cuento en privado, no por aquí 🆘 👉 https://t.me/AgileGuayotaBot?start=help"
+    );
+  }
+
+  await ctx.reply(help);
 });
 
 bot.on("message", (ctx) => {
