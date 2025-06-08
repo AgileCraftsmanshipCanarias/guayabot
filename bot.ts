@@ -66,6 +66,7 @@ bot.callbackQuery("send_rules", async (ctx) => {
   const userId = ctx.callbackQuery.from.id;
 
   await ctx.api.sendMessage(userId, rules);
+  
 
   await ctx.answerCallbackQuery();
 });
