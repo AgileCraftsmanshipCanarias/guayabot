@@ -103,7 +103,7 @@ bot.command("rules", async (ctx) => {
 });
 
 bot.command("session", async (ctx) => {
-  await ctx.reply("Que bueno una propuesta de sesión! 🎉. Sube tu propuesta aquí 👉🏽 https://tally.so/r/mDEVlZ");
+  await ctx.reply("¡Genial 🤩! ¡una propuesta de sesión! 🎉. Sube tu propuesta aquí 👉🏽 https://tally.so/r/mDEVlZ");
 });
 
 bot.command("help", async (ctx) => {
