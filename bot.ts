@@ -49,6 +49,9 @@ bot.command("rules", async (ctx) => {
 bot.on("message", (ctx) => {
   const { new_chat_members } = ctx.message;
 
+  console.log("Incoming message", ctx.message);
+  console.log("Chat", ctx.chat);
+
   if (ctx.chat.id === AGILE_CANARIAS_CHAT_ID && new_chat_members) {
     const firstMember = new_chat_members[0];
     const name = firstMember.first_name;
@@ -69,4 +72,8 @@ bot.callbackQuery("send_rules", async (ctx) => {
 
 function getWelcomeMessage(name: string) {
   return `¡Muy buenas, ${name}! 🌞 Te damos la bienvenida con cariño isleño al grupo de Agile Canarias en Telegram. Aquí puedes ver las normas del grupo:`;
+}
+
+export function onSessionReceived(params: string) {
+  // 
 }
