@@ -1,4 +1,4 @@
-# Guayota Bot
+# Guayabot
 
 A Telegram bot for the Agile Canarias community, built with [grammY](https://grammy.dev/) and Deno. The bot helps manage group rules, suggestions, session proposals, and more.
 
