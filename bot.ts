@@ -133,7 +133,7 @@ function getWelcomeMessage(names: string[]) {
   const formattedNames = formatNamesList(names);
   const [te, puedes] = names.length > 1 ? ["Les", "Pueden"] : ["Te", "Puedes"];
 
-  return `¡Muy buenas, ${formattedNames}! 🌞 ${te} damos la bienvenida con cariño isleño al grupo de Agile Canarias en Telegram. Aquí ${puedes} ver las normas del grupo:\nhttps://t.me/AgileGuayotaBot?start=rules\n(recuerda dale a Start)`;
+  return `¡Muy buenas, ${formattedNames}! 🌞 ${te} damos la bienvenida con cariño isleño al grupo de Agile Canarias en Telegram. Aquí ${puedes} ver las normas del grupo:\nhttps://t.me/AgileGuayotaBot?start=rules\n\nRecuerda darle a Start!`;
 }
 
 export async function onSessionReceived(
