@@ -19,7 +19,8 @@ if (!token) {
 export const bot = new Bot(token);
 
 const AGILE_CANARIAS_CHAT_ID = -1002483762435;
-const AGILE_CANARIAS_ORGANIZATION_CHAT_ID = -4780986247;
+const AGILE_CANARIAS_ORGANIZATION_CHAT_ID = -601619008;
+const AGILE_CANARIAS_ORGANIZATION_TEST_CHAT_ID = -47809862472;
 
 const rules = `Gracias por tomarte la molestia de leerlas. Aquí tienes un resumen:
 
