@@ -1,4 +1,4 @@
-type DropdownOption = {
+type FormOption = {
   id: string;
   text: string;
 };
@@ -11,7 +11,7 @@ type FormField = {
 type DropdownField = FormField & {
   type: "DROPDOWN";
   value: string[];
-  options: DropdownOption[];
+  options: FormOption[];
 };
 
 function isDropdownField(field: ConcreteFormField): field is DropdownField {
@@ -22,6 +22,16 @@ type InputTextField = FormField & {
   type: "INPUT_TEXT";
   value: null | string;
 };
+
+type MultipleChoiceField = FormField & {
+    type: "MULTIPLE_CHOICE";
+    value: null | string;
+    options: FormOption[];
+}
+
+function isMultipleChoiceField(field: ConcreteFormField): field is MultipleChoiceField {
+  return field.type === "MULTIPLE_CHOICE";
+}
 
 type FileUpload = {
   id: string;
@@ -49,7 +59,8 @@ type ConcreteFormField =
   | DropdownField
   | InputTextField
   | FileUploadField
-  | TextareaField;
+  | TextareaField
+  | MultipleChoiceField
 
 export type SessionReceivedPayload = {
   eventId: string;
@@ -93,6 +104,15 @@ function summarizeField(field: ConcreteFormField) {
       label: field.label,
       value:
         field.options.find((option) => field.value.includes(option.id))?.text ??
+        "No seleccionado",
+    };
+  }
+
+  if (isMultipleChoiceField(field)) {
+    return {
+      label: field.label,
+      value:
+        field.options.find((option) => field.value === option.id)?.text ??
         "No seleccionado",
     };
   }
