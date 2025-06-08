@@ -22,6 +22,7 @@ Deno.serve(async (req) => {
     if (req.url.includes("tally") && req.url.includes(tallySecret)) {
       const body = await req.json();
       
+      console.log("Received tally webhook", body);
       await onSessionReceived(body);
 
       return new Response(undefined, { status: 204 });
