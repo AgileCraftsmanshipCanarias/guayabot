@@ -1,5 +1,13 @@
-import { Bot, InlineKeyboard } from "https://deno.land/x/grammy@v1.36.3/mod.ts";
-import { SessionReceivedPayload, summarySession } from "./summarySession.ts";
+import {
+  Bot,
+  InlineKeyboard,
+  InputFile,
+} from "https://deno.land/x/grammy@v1.36.3/mod.ts";
+import {
+  extractImages,
+  SessionReceivedPayload,
+  summarySession,
+} from "./summarySession.ts";
 
 const token = Deno.env.get("TELEGRAM_TOKEN");
 
@@ -69,7 +77,6 @@ bot.callbackQuery("send_rules", async (ctx) => {
 
   await ctx.api.sendMessage(userId, rules);
 
-
   await ctx.answerCallbackQuery();
 });
 
@@ -77,8 +84,19 @@ function getWelcomeMessage(name: string) {
   return `¡Muy buenas, ${name}! 🌞 Te damos la bienvenida con cariño isleño al grupo de Agile Canarias en Telegram. Aquí puedes ver las normas del grupo:`;
 }
 
-export async function onSessionReceived(sessionReceived: SessionReceivedPayload) {
+export async function onSessionReceived(
+  sessionReceived: SessionReceivedPayload
+) {
   const summary = summarySession(sessionReceived);
+  const files = extractImages(sessionReceived)
+    .map((url) => new URL(url))
+    .map((url) => new InputFile(url));
 
-  await bot.api.sendMessage(AGILE_CANARIAS_ORGANIZATION_CHAT_ID, summary, { parse_mode: "Markdown" });
+  await bot.api.sendMessage(AGILE_CANARIAS_ORGANIZATION_CHAT_ID, summary, {
+    parse_mode: "Markdown",
+  });
+
+  for (const file of files) {
+    await bot.api.sendPhoto(AGILE_CANARIAS_ORGANIZATION_CHAT_ID, file);
+  }
 }

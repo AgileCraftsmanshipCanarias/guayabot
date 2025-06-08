@@ -23,13 +23,21 @@ type InputTextField = FormField & {
   value: null | string;
 };
 
+type FileUpload = {
+  id: string;
+  name: string;
+  url: string;
+  mimeType: string;
+  size: number;
+};
+
 type FileUploadField = FormField & {
   type: "FILE_UPLOAD";
-  value: null | unknown;
+  value: null | FileUpload[];
 };
 
 function isFileUploadField(field: ConcreteFormField): field is FileUploadField {
-    return field.type === "FILE_UPLOAD";
+  return field.type === "FILE_UPLOAD";
 }
 
 type TextareaField = FormField & {
@@ -64,12 +72,19 @@ export type SessionReceivedPayload = {
   };
 };
 
-function hasValue(value:{label: string; value: string | null}): value is {label: string; value: string} {
-  return value.value !== null;  
+function hasValue(value: {
+  label: string;
+  value: string | null;
+}): value is { label: string; value: string } {
+  return value.value !== null;
 }
 
 export function summarySession(sessionReceived: SessionReceivedPayload) {
-  return sessionReceived.data.fields.map(summarizeField).filter(hasValue).map(f => `**${f.label}**: ${f.value}`).join("\n");
+  return sessionReceived.data.fields
+    .map(summarizeField)
+    .filter(hasValue)
+    .map((f) => `**${f.label}**: ${f.value}`)
+    .join("\n");
 }
 
 function summarizeField(field: ConcreteFormField) {
@@ -86,7 +101,9 @@ function summarizeField(field: ConcreteFormField) {
     console.log("File upload field", field);
     return {
       label: field.label,
-      value: field.value ? "Ha subido imágenes (hay que ir a Tally a verlas)" : "No adjuntado",
+      value: field.value
+        ? "Ha subido imágenes (hay que ir a Tally a verlas)"
+        : "No adjuntado",
     };
   }
 
@@ -94,4 +111,11 @@ function summarizeField(field: ConcreteFormField) {
     label: field.label,
     value: field.value,
   };
+}
+
+export function extractImages(sessionReceived: SessionReceivedPayload) {
+  return sessionReceived.data.fields
+    .filter(isFileUploadField)
+    .flatMap((field) => field.value ?? [])
+    .map((file) => file.url);
 }
