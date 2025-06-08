@@ -144,11 +144,11 @@ export async function onSessionReceived(
     .map((url) => new URL(url))
     .map((url) => new InputFile(url));
 
-  await bot.api.sendMessage(AGILE_CANARIAS_ORGANIZATION_CHAT_ID, summary, {
+  await bot.api.sendMessage(AGILE_CANARIAS_ORGANIZATION_TEST_CHAT_ID, summary, {
     parse_mode: "Markdown",
   });
 
   for (const file of files) {
-    await bot.api.sendPhoto(AGILE_CANARIAS_ORGANIZATION_CHAT_ID, file);
+    await bot.api.sendPhoto(AGILE_CANARIAS_ORGANIZATION_TEST_CHAT_ID, file);
   }
 }

@@ -109,6 +109,8 @@ function summarizeField(field: ConcreteFormField) {
   }
 
   if (isMultipleChoiceField(field)) {
+    console.log("MultipleChoiceField", field);
+
     return {
       label: field.label,
       value:
