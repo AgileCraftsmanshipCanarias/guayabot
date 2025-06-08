@@ -8,6 +8,7 @@ import {
   SessionReceivedPayload,
   summarySession,
 } from "./summarySession.ts";
+import { formatNamesList } from "./formatNamesList.ts";
 
 const token = Deno.env.get("TELEGRAM_TOKEN");
 
@@ -35,25 +36,59 @@ Este espacio es para hablar de Agilidad y Software, ni más ni menos. Las discus
 Comparte lo que sepas, lo que hayas vivido y hasta lo que no funcionó. Eso sí: no spam, NSFW, ni cosas ilegales. Esto es una comunidad, no un mercadillo.`;
 
 bot.command("start", async (ctx) => {
-  if (ctx.chat.type === "private") {
-    if (ctx.match === "rules") {
-      return ctx.reply(rules);
-    }
+  if (ctx.chat.type !== "private") {
+    return;
+  }
 
-    await ctx.reply(
-      "¡Hola! Soy el bot de Agile Canarias. Puedes usar el comando /rules para ver las normas del grupo."
+  if (ctx.match === "rules") {
+    return ctx.reply(rules);
+  }
+
+  if (ctx.match === "suggestion") {
+    return ctx.reply(
+      "Escribe tu sugerencia después del comando. Ejemplo:\n/sugerencia Me gustaría que haya más eventos online."
     );
   }
+
+  await ctx.reply(
+    "¡Hola! Soy el bot de Agile Canarias. Puedes usar el comando /rules para ver las normas del grupo."
+  );
+});
+
+bot.command("suggestion", async (ctx) => {
+  if (ctx.chat.type !== "private") {
+    await ctx.reply(
+      "Por favor, envíame tu sugerencia en privado 👉 https://t.me/AgileGuayotaBot?start=suggestion"
+    );
+    return;
+  }
+
+  const suggestion = ctx.match?.trim();
+  if (!suggestion) {
+    await ctx.reply(
+      "Por favor, escribe tu sugerencia después del comando. Ejemplo:\n/sugerencia Me gustaría que haya más eventos online."
+    );
+    return;
+  }
+
+  await ctx.api.sendMessage(
+    AGILE_CANARIAS_ORGANIZATION_CHAT_ID,
+    `📝 Nueva sugerencia de @${ctx.from?.username}:\n\n${suggestion}`
+  );
+
+  await ctx.reply(
+    "¡Gracias por tu sugerencia! La hemos recibido y la tendremos en cuenta."
+  );
 });
 
 bot.command("rules", async (ctx) => {
-  if (ctx.chat.type === "private") {
-    await ctx.reply(rules);
-  } else {
-    await ctx.reply(
-      "¡Ey! Las normas te las cuento en privado, no por aquí 📩 👉 https://t.me/AgileGuayotaBot"
+  if (ctx.chat.type !== "private") {
+    return ctx.reply(
+      "¡Ey! Las normas te las cuento en privado, no por aquí 📩 👉 https://t.me/AgileGuayotaBot?start=rules"
     );
   }
+
+  await ctx.reply(rules);
 });
 
 bot.on("message", (ctx) => {
@@ -63,25 +98,17 @@ bot.on("message", (ctx) => {
   console.log("Chat", ctx.chat);
 
   if (ctx.chat.id === AGILE_CANARIAS_CHAT_ID && new_chat_members) {
-    const firstMember = new_chat_members[0];
-    const name = firstMember.first_name;
-    const welcomeMessage = getWelcomeMessage(name);
-    return ctx.reply(welcomeMessage, {
-      reply_markup: new InlineKeyboard().text("📜 Ver normas", "send_rules"),
-    });
+    const names = new_chat_members.map((member) => member.first_name);
+    const welcomeMessage = getWelcomeMessage(names);
+    return ctx.reply(welcomeMessage);
   }
 });
 
-bot.callbackQuery("send_rules", async (ctx) => {
-  const userId = ctx.callbackQuery.from.id;
+function getWelcomeMessage(names: string[]) {
+  const formattedNames = formatNamesList(names);
+  const [te, puedes] = names.length > 1 ? ["Les", "Pueden"] : ["Te", "Puedes"];
 
-  await ctx.api.sendMessage(userId, rules);
-
-  await ctx.answerCallbackQuery();
-});
-
-function getWelcomeMessage(name: string) {
-  return `¡Muy buenas, ${name}! 🌞 Te damos la bienvenida con cariño isleño al grupo de Agile Canarias en Telegram. Aquí puedes ver las normas del grupo:`;
+  return `¡Muy buenas, ${formattedNames}! 🌞 ${te} damos la bienvenida con cariño isleño al grupo de Agile Canarias en Telegram. Aquí ${puedes} ver las normas del grupo:`;
 }
 
 export async function onSessionReceived(
