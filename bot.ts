@@ -53,7 +53,7 @@ bot.command("start", async (ctx) => {
 
   if (ctx.match === "suggestion") {
     return ctx.reply(
-      "Escribe tu sugerencia después del comando. Ejemplo:\n/sugerencia Me gustaría que haya más eventos online."
+      "Escribe tu sugerencia después del comando. Ejemplo:\n/suggestion Me gustaría que haya más eventos online."
     );
   }
 
@@ -77,7 +77,7 @@ bot.command("suggestion", async (ctx) => {
   const suggestion = ctx.match?.trim();
   if (!suggestion) {
     await ctx.reply(
-      "Por favor, escribe tu sugerencia después del comando. Ejemplo:\n/sugerencia Me gustaría que haya más eventos online."
+      "Por favor, escribe tu sugerencia después del comando. Ejemplo:\n/suggestion Me gustaría que haya más eventos online."
     );
     return;
   }
