@@ -98,11 +98,10 @@ function summarizeField(field: ConcreteFormField) {
   }
 
   if (isFileUploadField(field)) {
-    console.log("File upload field", field);
     return {
       label: field.label,
       value: field.value
-        ? "Ha subido imágenes (hay que ir a Tally a verlas)"
+        ? "Ha subido imágenes"
         : "No adjuntado",
     };
   }
