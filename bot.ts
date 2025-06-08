@@ -37,10 +37,9 @@ Comparte lo que sepas, lo que hayas vivido y hasta lo que no funcionó. Eso sí:
 
 const help = `Puedes usar los siguientes comandos:
 - /rules: Muestra las normas del grupo
-- /suggestion [tu sugerencia]: Envía una sugerencia al grupo
-- /session: Propón una sesión para el grupo
+- /suggestion [tu sugerencia]: Envía propuestas de mejora a la organización de forma anónima
+- /session: Propón una sesión, una charla, kata, workshop, etc.
 - /help: Muestra esta ayuda`;
-
 
 bot.command("start", async (ctx) => {
   if (ctx.chat.type !== "private") {
