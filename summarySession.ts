@@ -25,7 +25,7 @@ type InputTextField = FormField & {
 
 type MultipleChoiceField = FormField & {
     type: "MULTIPLE_CHOICE";
-    value: null | string;
+    value: null | string[];
     options: FormOption[];
 }
 
@@ -114,7 +114,7 @@ function summarizeField(field: ConcreteFormField) {
     return {
       label: field.label,
       value:
-        field.options.find((option) => field.value === option.id)?.text ??
+        field.options.find((option) => field?.value?.includes(option.id))?.text ??
         "No seleccionado",
     };
   }
