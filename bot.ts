@@ -29,6 +29,9 @@ Habla claro, con cariño y sin mala intención. Si hay desacuerdo, que sea para 
 🌀 Curiosidad
 Aquí venimos a aprender, no a presumir. Si tienes dudas, suéltalas sin miedo. Desde quienes llevan 15 años agilizando hasta quien acaba de descubrir qué es una daily, todo el mundo tiene su lugar aquí.
 
+🛡️ Espacio seguro
+Queremos que este sea un lugar donde se pueda compartir sin miedo. Aquí abrazamos la diversidad y cuidamos que nadie se sienta fuera de lugar. Todas las personas son bienvenidas, sin importar su identidad, experiencia o forma de expresarse.
+
 🎯 Foco
 Este espacio es para hablar de Agilidad y Software, ni más ni menos. Las discusiones políticas, filosóficas o sobre el clima en Marte se quedan en la puerta.
 
